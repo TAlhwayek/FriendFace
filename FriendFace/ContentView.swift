@@ -11,6 +11,8 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     
+    // Sort by online status
+    // Then by name
     @Query(sort: [
         SortDescriptor(\User.isActive, order: .reverse),
         SortDescriptor(\User.name)
@@ -29,14 +31,16 @@ struct ContentView: View {
             .navigationTitle("Friends")
             .preferredColorScheme(.dark)
             .task {
+                // Only pull data from API is nothing is saved
+                // That way it works offline (challenge requirement)
                 if users.isEmpty {
                     await loadData()
                 }
             }
         }
-        
     }
     
+    // Pull data from API and store in SwiftData
     func loadData() async {
         guard let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json") else {
             print("Invalid URL")
