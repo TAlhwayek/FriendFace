@@ -14,17 +14,17 @@ class User: Codable {
         case id, isActive, name, age, company, email, address, about, registered, tags, friends
     }
     
-    let id: UUID
-    let isActive: Bool
-    let name: String
-    let age: Int
-    let company: String
-    let email: String
-    let address: String
-    let about: String
-    let registered: String
-    let tags: [String]
-    let friends: [Friend]
+    var id: UUID
+    var isActive: Bool
+    var name: String
+    var age: Int
+    var company: String
+    var email: String
+    var address: String
+    var about: String
+    var registered: String
+    var tags: [String]
+    @Relationship(deleteRule: .cascade) var friends = [Friend]()
     
     init(id: UUID, isActive: Bool, name: String, age: Int, company: String, email: String, address: String, about: String, registered: String, tags: [String], friends: [Friend]) {
         self.id = id

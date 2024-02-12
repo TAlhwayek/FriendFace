@@ -30,6 +30,18 @@ struct ContentView: View {
             .listStyle(.plain)
             .navigationTitle("Friends")
             .preferredColorScheme(.dark)
+            .toolbar {
+                Button {
+                    Task {
+                        // Delete stored data
+                        try? modelContext.delete(model: User.self)
+                        // Redownload user data
+                        await loadData()
+                    }
+                } label: {
+                    Label("Refresh", systemImage: "arrow.clockwise")
+                }
+            }
             .task {
                 // Only pull data from API is nothing is saved
                 // That way it works offline (challenge requirement)
