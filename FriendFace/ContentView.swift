@@ -26,7 +26,15 @@ struct ContentView: View {
                 }
                 .padding(-4)
                 .listRowSeparator(.hidden)
+                .swipeActions(edge: .trailing) {
+                    Button() {
+                        
+                    } label: {
+                        Label("Like", systemImage: "hand.thumbsup.fill")
+                    }
+                } .tint(.blue)
             }
+            
             .listStyle(.plain)
             .navigationTitle("Friends")
             .preferredColorScheme(.dark)
