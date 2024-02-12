@@ -6,8 +6,14 @@
 //
 
 import Foundation
+import SwiftData
 
-struct User: Codable, Identifiable {
+@Model
+class User: Codable, Identifiable {
+    enum CodingKeys: CodingKey {
+        case id, isActive, name, age, company, email, address, about, registered, tags, friends
+    }
+    
     let id: UUID
     let isActive: Bool
     let name: String
@@ -42,4 +48,21 @@ struct User: Codable, Identifiable {
         dateFormatter.dateFormat = "MMMM d, yyyy"
         return dateFormatter.string(from: date)
     }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id            = try container.decode(UUID.self, forKey: .id)
+        isActive      = try container.decode(Bool.self, forKey: .isActive)
+        name          = try container.decode(String.self, forKey: .name)
+        company       = try container.decode(String.self, forKey: .company)
+        email         = try container.decode(String.self, forKey: .email)
+        address       = try container.decode(String.self, forKey: .address)
+        about         = try container.decode(String.self, forKey: .about)
+        registered    = try container.decode(String.self, forKey: .registered)
+        tags          = try container.decode([String].self, forKey: .tags)
+        friends       = try container.decode([Friend].self, forKey: .friends)
+    }
+    
+    
+    
 }

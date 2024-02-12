@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Friend: Codable, Identifiable {
+@Model
+class Friend: Codable, Identifiable {
     let id: UUID
     let name: String
 }
