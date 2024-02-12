@@ -5,10 +5,16 @@
 //  Created by Tony Alhwayek on 2/10/24.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
-    @State private var users = [User]()
+    @Environment(\.modelContext) var modelContext
+    
+    @Query(sort: [
+        SortDescriptor(\User.isActive, order: .reverse),
+        SortDescriptor(\User.name)
+    ]) var users: [User]
     
     var body: some View {
         NavigationStack {
@@ -40,10 +46,21 @@ struct ContentView: View {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let decodedResponse = try JSONDecoder().decode([User].self, from: data)
-            users = decodedResponse
+            
+            for user in decodedResponse {
+                modelContext.insert(user)
+            }
         } catch {
             print("Error loading data: \(error.localizedDescription)")
         }
+    }
+}
+
+// This allows the query to work on booleans
+extension Bool: Comparable {
+    public static func <(lhs: Self, rhs: Self) -> Bool {
+        // the only true inequality is false < true
+        !lhs && rhs
     }
 }
 

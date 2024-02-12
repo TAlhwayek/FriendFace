@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Friend: Codable, Identifiable {
+class Friend: Codable {
     enum CodingKeys: CodingKey {
         case id, name
     }
