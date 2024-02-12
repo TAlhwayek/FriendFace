@@ -34,27 +34,19 @@ struct ContentView: View {
                     }
                 }
             }
-            
             .listStyle(.plain)
             .navigationTitle("FriendFace")
             .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
-            .toolbar {
-                Button {
-                    Task {
-                        // Delete stored data
-                        try? modelContext.delete(model: User.self)
-                        // Redownload user data
-                        await loadData()
-                    }
-                } label: {
-                    Label("Refresh", systemImage: "arrow.clockwise")
-                }
-            }
             .task {
                 // Only pull data from API is nothing is saved
                 // That way it works offline (challenge requirement)
                 if users.isEmpty {
+                    await loadData()
+                }
+            }
+            .refreshable {
+                Task {
                     await loadData()
                 }
             }
@@ -63,6 +55,9 @@ struct ContentView: View {
     
     // Pull data from API and store in SwiftData
     func loadData() async {
+        // Delete stored data
+        try? modelContext.delete(model: User.self)
+        
         guard let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json") else {
             print("Invalid URL")
             return
