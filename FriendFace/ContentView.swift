@@ -27,16 +27,17 @@ struct ContentView: View {
                 .padding(-4)
                 .listRowSeparator(.hidden)
                 .swipeActions(edge: .trailing) {
-                    Button() {
-                        
+                    Button(role: .destructive) {
+                        deleteUser(user)
                     } label: {
-                        Label("Like", systemImage: "hand.thumbsup.fill")
+                        Label("Delete", systemImage: "trash")
                     }
-                } .tint(.blue)
+                }
             }
             
             .listStyle(.plain)
-            .navigationTitle("Friends")
+            .navigationTitle("FriendFace")
+            .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
             .toolbar {
                 Button {
@@ -77,6 +78,10 @@ struct ContentView: View {
         } catch {
             print("Error loading data: \(error.localizedDescription)")
         }
+    }
+    
+    func deleteUser(_ user: User) {
+        modelContext.delete(user)
     }
 }
 
